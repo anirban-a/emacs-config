@@ -327,12 +327,20 @@
 (use-package compat
   :demand t)
 
-(use-package which-key
-  :diminish which-key-mode
+(use-package guide-key
+  :diminish guide-key-mode
   :config
-  (setq which-key-idle-delay 0.5
-        which-key-show-early-on-C-h t)
-  (which-key-mode 1))
+  (setq guide-key/guide-key-sequence
+        '("C-x" "C-c" "C-c h" "C-c p"
+          (org-mode "C-c C-x")
+          (ess-r-mode "C-c")
+          (LaTeX-mode "C-c")))
+  (setq guide-key/recursive-key-sequence-flag t)
+  (setq guide-key/idle-delay 0.5)
+  (setq guide-key/popup-window-position 'bottom)
+  (setq guide-key/highlight-command-regexp
+        '("helm" ("projectile" . font-lock-type-face)))
+  (guide-key-mode 1))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
