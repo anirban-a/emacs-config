@@ -403,16 +403,26 @@
          ("\\.edn\\'"  . clojure-mode)))
 
 (use-package cider
-  :after clojure-mode
-  :hook ((cider-mode . eldoc-mode)
+  :hook ((clojure-mode . cider-mode)
+         (cider-mode . eldoc-mode)
          (cider-repl-mode . eldoc-mode))
+  :init
+  ;; Set before CIDER loads so dynamic font-lock is ready at connection time
+  (setq cider-font-lock-dynamically '(macro core function var))
   :config
   (setq cider-repl-display-help-banner nil
         cider-repl-pop-to-buffer-on-connect 'display-only
         cider-auto-select-error-buffer nil
-        cider-font-lock-dynamically '(macro core function var)
         cider-repl-use-pretty-printing t
         cider-eldoc-display-for-symbol-at-point t)
+
+  ;; Refresh font-lock after connecting to REPL
+  (add-hook 'cider-connected-hook
+            (lambda ()
+              (dolist (buf (buffer-list))
+                (with-current-buffer buf
+                  (when (derived-mode-p 'clojure-mode)
+                    (cider-refresh-dynamic-font-lock))))))
 
   ;; Company completion via CIDER
   (add-hook 'cider-mode-hook
