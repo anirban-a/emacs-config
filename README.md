@@ -20,9 +20,24 @@ On first launch, Emacs will automatically download and install all packages from
 
 ### Theme & Appearance
 
-- [tao-yang](https://github.com/11111000000/tao-theme-emacs) monochrome light theme
+- [tao-yang](https://github.com/11111000000/tao-theme-emacs) clean light background with vibrant syntax highlighting overlay
 - Source Code Pro, 14pt
 - Line numbers, line highlighting, matched parentheses
+- Custom color scheme for code:
+
+  | Element | Color |
+  |---------|-------|
+  | Keywords (`defn`, `if`, `ns`) | Purple, bold |
+  | Function names | Blue, bold |
+  | Variables | Orange |
+  | Strings | Green |
+  | Comments | Gray, italic |
+  | Constants | Red |
+  | Types | Sienna |
+  | Builtins | Slate blue |
+  | Clojure keywords (`:foo`) | Dark pink |
+
+- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) with distinct colors per nesting depth
 
 ### Navigation (Helm)
 
