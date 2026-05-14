@@ -68,7 +68,7 @@ Helm replaces standard Emacs completion with fuzzy-matching interactive selectio
 - [clj-refactor](https://github.com/clojure-emacs/clj-refactor.el) for refactoring (`C-c C-m` prefix)
 - [smartparens](https://github.com/Fuco1/smartparens) strict mode for balanced parentheses
 - Supports `.clj`, `.cljs`, `.cljc`, and `.edn` files
-- Requires [Leiningen](https://leiningen.org/) or the [Clojure CLI](https://clojure.org/guides/install_clojure)
+- Requires [Leiningen](https://leiningen.org/) or the [Clojure CLI](https://clojure.org/guides/install_clojure) -- see [Clojure Ecosystem Setup](docs/clojure-setup.md) for installation and usage guide
 
 ### Lean 4
 
