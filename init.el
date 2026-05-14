@@ -404,12 +404,30 @@
 
 (use-package cider
   :after clojure-mode
+  :hook ((cider-mode . eldoc-mode)
+         (cider-repl-mode . eldoc-mode))
   :config
   (setq cider-repl-display-help-banner nil
         cider-repl-pop-to-buffer-on-connect 'display-only
         cider-auto-select-error-buffer nil
         cider-font-lock-dynamically '(macro core function var)
-        cider-repl-use-pretty-printing t))
+        cider-repl-use-pretty-printing t
+        cider-eldoc-display-for-symbol-at-point t)
+
+  ;; Company completion via CIDER
+  (add-hook 'cider-mode-hook
+            (lambda ()
+              (setq-local company-backends
+                          '((company-capf company-dabbrev-code)))))
+  (add-hook 'cider-repl-mode-hook
+            (lambda ()
+              (setq-local company-backends
+                          '((company-capf company-dabbrev-code))))))
+
+(use-package rainbow-delimiters
+  :hook ((clojure-mode . rainbow-delimiters-mode)
+         (cider-repl-mode . rainbow-delimiters-mode)
+         (emacs-lisp-mode . rainbow-delimiters-mode)))
 
 (use-package clj-refactor
   :after clojure-mode
