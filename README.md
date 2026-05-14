@@ -20,10 +20,17 @@ On first launch, Emacs will automatically download and install all packages from
 
 ### Theme & Appearance
 
-- [tao-yang](https://github.com/11111000000/tao-theme-emacs) clean light background with vibrant syntax highlighting overlay
+Two themes included, toggled with `C-c t`:
+
+- **[badwolf](https://github.com/bkruczyk/badwolf-emacs)** (default) -- dark theme with built-in vibrant syntax highlighting
+- **[tao-yang](https://github.com/11111000000/tao-theme-emacs)** -- clean light background with custom syntax color overlay
+
+Other appearance settings:
 - Source Code Pro, 14pt
 - Line numbers, line highlighting, matched parentheses
-- Custom color scheme for code:
+- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) with distinct colors per nesting depth
+
+Custom color scheme for tao-yang light theme:
 
   | Element | Color |
   |---------|-------|
@@ -36,8 +43,6 @@ On first launch, Emacs will automatically download and install all packages from
   | Types | Sienna |
   | Builtins | Slate blue |
   | Clojure keywords (`:foo`) | Dark pink |
-
-- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) with distinct colors per nesting depth
 
 ### Navigation (Helm)
 
