@@ -82,7 +82,7 @@ Helm replaces standard Emacs completion with fuzzy-matching interactive selectio
 - **YASnippet** for snippet expansion
 - **Flycheck** for on-the-fly syntax checking
 - **Magit** (`C-x g`) for git
-- **which-key** for keybinding discovery
+- **[guide-key](https://github.com/kai2nenobu/guide-key)** for keybinding discovery (press a prefix like `C-x` or `C-c h` and wait 0.5s to see available bindings in a popup; recursive mode enabled, Helm/Projectile commands highlighted)
 - **multiple-cursors** (`C->`/`C-<`)
 - **expand-region** (`C-=`)
 - **undo-tree** for visual undo history
