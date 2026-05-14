@@ -393,6 +393,40 @@
   :mode "\\.csv\\'")
 
 ;; =========================================================================
+;; * Clojure
+;; =========================================================================
+
+(use-package clojure-mode
+  :mode (("\\.clj\\'"  . clojure-mode)
+         ("\\.cljs\\'" . clojurescript-mode)
+         ("\\.cljc\\'" . clojurec-mode)
+         ("\\.edn\\'"  . clojure-mode)))
+
+(use-package cider
+  :after clojure-mode
+  :config
+  (setq cider-repl-display-help-banner nil
+        cider-repl-pop-to-buffer-on-connect 'display-only
+        cider-auto-select-error-buffer nil
+        cider-font-lock-dynamically '(macro core function var)
+        cider-repl-use-pretty-printing t))
+
+(use-package clj-refactor
+  :after clojure-mode
+  :diminish clj-refactor-mode
+  :hook (clojure-mode . (lambda ()
+                          (clj-refactor-mode 1)
+                          (cljr-add-keybindings-with-prefix "C-c C-m"))))
+
+(use-package smartparens
+  :diminish smartparens-mode
+  :hook ((clojure-mode . smartparens-strict-mode)
+         (cider-repl-mode . smartparens-strict-mode)
+         (emacs-lisp-mode . smartparens-strict-mode))
+  :config
+  (require 'smartparens-config))
+
+;; =========================================================================
 ;; * Lean 4
 ;; =========================================================================
 
