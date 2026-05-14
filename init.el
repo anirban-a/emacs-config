@@ -21,31 +21,28 @@
 (setq use-package-always-ensure t)
 
 ;; =========================================================================
-;; * Theme & Appearance (tao-theme Yang)
+;; * Theme & Appearance
 ;; =========================================================================
 
-(use-package tao-theme
-  :config
-  (load-theme 'tao-yang t)
+(use-package tao-theme :defer t)
+(use-package badwolf-theme :defer t)
 
-  ;; Vibrant syntax highlighting over tao-yang's monochrome base
+;; Custom face overrides for tao-yang (vibrant syntax on monochrome base)
+(defun my/apply-tao-yang-faces ()
+  "Apply vibrant syntax highlighting for tao-yang."
   (custom-set-faces
-   '(font-lock-keyword-face       ((t (:foreground "#7928a0" :weight bold))))  ; purple
-   '(font-lock-function-name-face ((t (:foreground "#1a6fb5" :weight bold))))  ; blue
-   '(font-lock-variable-name-face ((t (:foreground "#b55a1a"))))               ; orange
-   '(font-lock-string-face        ((t (:foreground "#2a8c4a"))))               ; green
-   '(font-lock-comment-face       ((t (:foreground "#8a8a8a" :slant italic)))) ; gray italic
-   '(font-lock-type-face          ((t (:foreground "#a0522d"))))               ; sienna
-   '(font-lock-constant-face      ((t (:foreground "#b5264e"))))               ; red
-   '(font-lock-builtin-face       ((t (:foreground "#6a5acd"))))               ; slate blue
-   '(font-lock-warning-face       ((t (:foreground "#cc3333" :weight bold))))  ; bright red
-   '(font-lock-doc-face           ((t (:foreground "#5f8c5f" :slant italic)))) ; muted green
-
-   ;; Clojure/CIDER specific
+   '(font-lock-keyword-face       ((t (:foreground "#7928a0" :weight bold))))
+   '(font-lock-function-name-face ((t (:foreground "#1a6fb5" :weight bold))))
+   '(font-lock-variable-name-face ((t (:foreground "#b55a1a"))))
+   '(font-lock-string-face        ((t (:foreground "#2a8c4a"))))
+   '(font-lock-comment-face       ((t (:foreground "#8a8a8a" :slant italic))))
+   '(font-lock-type-face          ((t (:foreground "#a0522d"))))
+   '(font-lock-constant-face      ((t (:foreground "#b5264e"))))
+   '(font-lock-builtin-face       ((t (:foreground "#6a5acd"))))
+   '(font-lock-warning-face       ((t (:foreground "#cc3333" :weight bold))))
+   '(font-lock-doc-face           ((t (:foreground "#5f8c5f" :slant italic))))
    '(cider-result-overlay-face    ((t (:foreground "#1a6fb5" :background "#e8f0fe"))))
-   '(clojure-keyword-face         ((t (:foreground "#8b2252"))))               ; dark pink
-
-   ;; Rainbow delimiters
+   '(clojure-keyword-face         ((t (:foreground "#8b2252"))))
    '(rainbow-delimiters-depth-1-face ((t (:foreground "#7928a0"))))
    '(rainbow-delimiters-depth-2-face ((t (:foreground "#1a6fb5"))))
    '(rainbow-delimiters-depth-3-face ((t (:foreground "#2a8c4a"))))
@@ -55,6 +52,37 @@
    '(rainbow-delimiters-depth-7-face ((t (:foreground "#b5264e"))))
    '(rainbow-delimiters-depth-8-face ((t (:foreground "#8b2252"))))
    '(rainbow-delimiters-depth-9-face ((t (:foreground "#1a6fb5"))))))
+
+(defvar my/current-theme 'badwolf
+  "Currently active theme. Set to 'tao-yang or 'badwolf.")
+
+(defun my/load-theme-badwolf ()
+  "Load badwolf dark theme."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'badwolf t)
+  (setq my/current-theme 'badwolf))
+
+(defun my/load-theme-tao-yang ()
+  "Load tao-yang light theme with vibrant syntax colors."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'tao-yang t)
+  (my/apply-tao-yang-faces)
+  (setq my/current-theme 'tao-yang))
+
+(defun my/toggle-theme ()
+  "Toggle between badwolf and tao-yang themes."
+  (interactive)
+  (if (eq my/current-theme 'badwolf)
+      (my/load-theme-tao-yang)
+    (my/load-theme-badwolf))
+  (message "Theme: %s" my/current-theme))
+
+(global-set-key (kbd "C-c t") #'my/toggle-theme)
+
+;; Default to badwolf
+(my/load-theme-badwolf)
 
 (set-face-attribute 'default nil
                     :family "Source Code Pro"
