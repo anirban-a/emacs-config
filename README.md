@@ -62,6 +62,14 @@ Helm replaces standard Emacs completion with fuzzy-matching interactive selectio
 - ebib for BibTeX database management
 - latexmk compilation with synctex
 
+### Clojure
+
+- [CIDER](https://github.com/clojure-emacs/cider) for interactive REPL development (`M-x cider-jack-in` to connect)
+- [clj-refactor](https://github.com/clojure-emacs/clj-refactor.el) for refactoring (`C-c C-m` prefix)
+- [smartparens](https://github.com/Fuco1/smartparens) strict mode for balanced parentheses
+- Supports `.clj`, `.cljs`, `.cljc`, and `.edn` files
+- Requires [Leiningen](https://leiningen.org/) or the [Clojure CLI](https://clojure.org/guides/install_clojure)
+
 ### Lean 4
 
 - [lean4-mode](https://github.com/leanprover-community/lean4-mode) (included as git submodule)
