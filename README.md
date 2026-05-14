@@ -65,6 +65,10 @@ Helm replaces standard Emacs completion with fuzzy-matching interactive selectio
 ### Clojure
 
 - [CIDER](https://github.com/clojure-emacs/cider) for interactive REPL development (`M-x cider-jack-in` to connect)
+- Context-aware autocomplete via Company + CIDER (symbols, namespaces, Java interop)
+- Eldoc for inline function signatures in the minibuffer
+- Dynamic syntax highlighting for macros, core functions, and vars
+- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) for color-coded nested parentheses
 - [clj-refactor](https://github.com/clojure-emacs/clj-refactor.el) for refactoring (`C-c C-m` prefix)
 - [smartparens](https://github.com/Fuco1/smartparens) strict mode for balanced parentheses
 - Supports `.clj`, `.cljs`, `.cljc`, and `.edn` files
