@@ -1,0 +1,11 @@
+elpa/
+auto-save-list/
+undo-tree-hist/
+places
+recentf
+custom.el
+snippets/
+*.elc
+*~
+\#*\#
+.\#*
