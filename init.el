@@ -171,6 +171,15 @@
          ("M-g o"   . consult-outline)
          ("C-x r b" . consult-bookmark)))
 
+(use-package embark
+  :bind (("C-."   . embark-act)
+         ("C-;"   . embark-dwim)
+         ("C-h B" . embark-bindings)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
 ;; =========================================================================
 ;; * Project Management
 ;; =========================================================================
@@ -388,6 +397,18 @@
 
 (use-package diminish)
 
+;; =========================================================================
+;; * Eshell & Shell History (Consult)
+;; =========================================================================
+
+(with-eval-after-load 'eshell
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "C-c C-l")
+                #'consult-history))))
+
+(with-eval-after-load 'shell
+  (define-key shell-mode-map (kbd "C-c C-l") #'consult-history))
 
 ;; =========================================================================
 ;; * Markdown
