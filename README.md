@@ -1,104 +1,141 @@
 # Emacs Configuration
 
-A minimal Emacs configuration for data science (R, Python, LaTeX) and Lean 4 theorem proving, built on Helm and the tao-yang monochrome theme.
+A minimal Emacs configuration for data science (R, Python, LaTeX), Clojure, and Lean 4 theorem proving. Uses Vertico + Consult for completion and the badwolf/tao-yang themes.
 
-## Prerequisites
+## Setup
 
-- Emacs 27+
-- [Source Code Pro](https://github.com/adobe-fonts/source-code-pro) font
-- [elan](https://github.com/leanprover/elan) (for Lean 4 support)
+### macOS
 
-## Installation
+```bash
+# Emacs
+brew install --cask emacs
+
+# Font
+brew install --cask font-source-code-pro
+
+# Language toolchains
+brew install r
+brew install python
+pip install jupyter
+brew install leiningen            # Clojure
+brew install --cask mactex        # LaTeX
+brew install latexmk
+brew install ripgrep              # for consult-ripgrep
+
+# Lean 4
+curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh
+```
+
+### Ubuntu
+
+```bash
+# Emacs
+sudo apt install emacs
+
+# Font
+sudo apt install fonts-source-code-pro
+
+# Language toolchains
+sudo apt install r-base
+sudo apt install python3 python3-pip python3-venv
+pip install jupyter
+sudo apt install leiningen        # Clojure
+sudo apt install texlive texlive-latex-extra latexmk  # LaTeX
+sudo apt install ripgrep          # for consult-ripgrep
+
+# Lean 4
+curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh
+```
+
+### Install the config
 
 ```bash
 git clone --recursive https://github.com/anirban-a/emacs-config.git ~/.emacs.d
 ```
 
+Lean 4 mode is not on MELPA. If not included as a submodule, clone it manually:
+
+```bash
+cd ~/.emacs.d
+git clone https://github.com/leanprover-community/lean4-mode.git
+```
+
 On first launch, Emacs will automatically download and install all packages from MELPA/ELPA. This may take a minute or two.
 
-## What's Included
+## File Structure
 
-### Theme & Appearance
+```
+~/.emacs.d/
+  init.el              # Main configuration
+  early-init.el        # Startup optimizations, disable UI chrome early
+  platform-darwin.el   # macOS-specific settings (PDF viewer: open)
+  platform-linux.el    # Linux-specific settings (PDF viewer: xdg-open)
+  lean4-mode/          # Local checkout (git submodule)
+```
 
-Two themes included, toggled with `C-c t`:
+Platform-specific files are loaded automatically based on `system-type`. Packages are installed to `elpa/` on first launch (gitignored).
 
-- **[badwolf](https://github.com/bkruczyk/badwolf-emacs)** (default) -- dark theme with built-in vibrant syntax highlighting
-- **[tao-yang](https://github.com/11111000000/tao-theme-emacs)** -- clean light background with custom syntax color overlay
+## Theme & Appearance
 
-Other appearance settings:
-- Source Code Pro, 14pt
-- Line numbers, line highlighting, matched parentheses
-- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) with distinct colors per nesting depth
+Two themes, toggled with `C-c t`:
 
-Custom color scheme for tao-yang light theme:
+- **[badwolf](https://github.com/bkruczyk/badwolf-emacs)** (default) -- dark theme
+- **[tao-yang](https://github.com/11111000000/tao-theme-emacs)** -- light theme with custom vibrant syntax colors
 
-  | Element | Color |
-  |---------|-------|
-  | Keywords (`defn`, `if`, `ns`) | Purple, bold |
-  | Function names | Blue, bold |
-  | Variables | Orange |
-  | Strings | Green |
-  | Comments | Gray, italic |
-  | Constants | Red |
-  | Types | Sienna |
-  | Builtins | Slate blue |
-  | Clojure keywords (`:foo`) | Dark pink |
+Other: Source Code Pro 14pt, line numbers, line highlighting, matched parentheses, [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters).
 
-### Navigation (Helm)
+## Key Bindings
 
-Helm replaces standard Emacs completion with fuzzy-matching interactive selection.
+### Completion & Navigation (Vertico + Consult + Embark)
 
-| Key | Command |
-|-----|---------|
-| `M-x` | `helm-M-x` (fuzzy command search) |
-| `C-x C-f` | `helm-find-files` |
-| `C-x b` | `helm-mini` (buffers + recent files) |
-| `M-y` | `helm-show-kill-ring` |
-| `C-c h o` | `helm-occur` (search in buffer) |
-| `C-c h i` | `helm-semantic-or-imenu` (jump to definition) |
-| `C-c h a` | `helm-apropos` |
-| `C-c h b` | `helm-resume` (resume last session) |
-| `C-c p h` | `helm-projectile` (project-wide file search) |
+| Key | Command | Purpose |
+|-----|---------|---------|
+| `M-x` | (enhanced by Vertico) | Command completion with orderless matching |
+| `C-x b` | `consult-buffer` | Buffers + recent files + bookmarks |
+| `C-x C-f` | (enhanced by Vertico) | File navigation |
+| `M-y` | `consult-yank-pop` | Kill ring browser |
+| `M-s l` | `consult-line` | Search lines in buffer |
+| `M-s g` | `consult-grep` | Grep across files |
+| `M-s r` | `consult-ripgrep` | Ripgrep across files |
+| `M-s f` | `consult-find` | Find file by name |
+| `M-s L` | `consult-locate` | Locate files |
+| `M-g i` | `consult-imenu` | Jump to symbol |
+| `M-g o` | `consult-outline` | Jump to heading |
+| `M-g m` | `consult-mark` | Mark ring |
+| `M-g M` | `consult-global-mark` | Global mark ring |
+| `C-x r b` | `consult-bookmark` | Bookmarks |
+| `C-.` | `embark-act` | Context actions on candidate |
+| `C-;` | `embark-dwim` | Default action at point |
+| `C-h B` | `embark-bindings` | Browse all key bindings |
 
-### Data Science
+### R / ESS
 
-**R / ESS**
-- ESS with RStudio-style indentation
-- `S-RET` sends line or region to R process
-- `M-_` inserts assignment operator (`<-`)
-- Polymode for R Markdown (`.Rmd`) files
+| Key | Command | Purpose |
+|-----|---------|---------|
+| `S-<return>` | `ess-send-line-or-region` | Send line/region to R |
+| `M-_` | `ess-insert-assign` | Insert `<-` |
+| `C-c C-i` | `polymode-insert-new-chunk` | New R chunk in Rmd |
 
-**Python / Elpy**
-- Elpy with Jupyter console integration
-- Flycheck for syntax checking (replaces flymake)
+ESS uses RStudio-style indentation. Flycheck runs on save only (to avoid lag from lintr). Polymode is enabled for `.Rmd` files.
 
-**Org Mode**
-- Babel support for R, Python, shell, LaTeX, and Emacs Lisp
-- Native source block fontification
+### Python / Elpy
 
-**LaTeX / AUCTeX**
-- AUCTeX with auto-parsing and PDF mode
-- RefTeX for citations and cross-references (biblatex formats)
-- ebib for BibTeX database management
-- latexmk compilation with synctex
+Elpy with Jupyter console integration. Start with `M-x run-python`.
+
+Flycheck replaces flymake for syntax checking.
 
 ### Clojure
 
-- [CIDER](https://github.com/clojure-emacs/cider) for interactive REPL development (`M-x cider-jack-in` to connect)
-- Context-aware autocomplete via Company + CIDER (symbols, namespaces, Java interop)
-- Eldoc for inline function signatures in the minibuffer
-- Dynamic syntax highlighting for macros, core functions, and vars
-- [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters) for color-coded nested parentheses
-- [clj-refactor](https://github.com/clojure-emacs/clj-refactor.el) for refactoring (`C-c C-m` prefix)
-- [smartparens](https://github.com/Fuco1/smartparens) strict mode for balanced parentheses
-- Supports `.clj`, `.cljs`, `.cljc`, and `.edn` files
-- Requires [Leiningen](https://leiningen.org/) or the [Clojure CLI](https://clojure.org/guides/install_clojure) -- see [Clojure Ecosystem Setup](docs/clojure-setup.md) for installation and usage guide
+| Key | Command | Purpose |
+|-----|---------|---------|
+| `M-x cider-jack-in` | | Connect to REPL |
+| `C-c C-m` | clj-refactor prefix | Refactoring commands |
+
+CIDER for REPL, Company + CIDER for completion, eldoc for signatures, dynamic syntax highlighting, rainbow-delimiters, smartparens strict mode. Supports `.clj`, `.cljs`, `.cljc`, `.edn`.
+
+Requires [Leiningen](https://leiningen.org/) or the [Clojure CLI](https://clojure.org/guides/install_clojure).
 
 ### Lean 4
-
-- [lean4-mode](https://github.com/leanprover-community/lean4-mode) (included as git submodule)
-- LSP integration via lsp-mode
-- Automatic `~/.elan/bin` path setup for GUI Emacs
 
 | Key | Command |
 |-----|---------|
@@ -108,24 +145,35 @@ Helm replaces standard Emacs completion with fuzzy-matching interactive selectio
 | `C-c C-p C-l` | Build with Lake |
 | `C-c C-i` | Toggle proof state viewer |
 
-### Completion & Editing
+LSP integration via lsp-mode. `~/.elan/bin` is added to PATH automatically.
 
-- **Company** for auto-completion (with math symbol support)
-- **YASnippet** for snippet expansion
-- **Flycheck** for on-the-fly syntax checking
-- **Magit** (`C-x g`) for git
-- **[guide-key](https://github.com/kai2nenobu/guide-key)** for keybinding discovery (press a prefix like `C-x` or `C-c h` and wait 0.5s to see available bindings in a popup; recursive mode enabled, Helm/Projectile commands highlighted)
-- **multiple-cursors** (`C->`/`C-<`)
-- **expand-region** (`C-=`)
-- **undo-tree** for visual undo history
+### LaTeX / AUCTeX
 
-## File Structure
+AUCTeX with auto-parsing, PDF mode, and latexmk. RefTeX for citations (biblatex formats). ebib for BibTeX management (`C-c b`).
 
-```
-~/.emacs.d/
-  early-init.el   -- startup optimizations, disable UI chrome early
-  init.el         -- main configuration
-  lean4-mode/     -- git submodule
-```
+PDF viewer is configured per-platform (`open` on macOS, `xdg-open` on Linux).
 
-Packages are installed to `elpa/` on first launch (gitignored).
+### Project Management
+
+| Key | Command | Purpose |
+|-----|---------|---------|
+| `C-c p f` | `projectile-find-file` | Find file in project |
+| `C-c p s` | `projectile-switch-project` | Switch project |
+| `C-c p g` | `projectile-grep` | Grep in project |
+
+### Git
+
+| Key | Command |
+|-----|---------|
+| `C-x g` | `magit-status` |
+
+### Editing
+
+| Key | Command | Purpose |
+|-----|---------|---------|
+| `C-c t` | `my/toggle-theme` | Toggle dark/light theme |
+| `C-=` | `er/expand-region` | Expand selection |
+| `C->` / `C-<` | `mc/mark-next/previous-like-this` | Multiple cursors |
+| `C-c k` | `browse-kill-ring` | Browse kill ring |
+
+Other: undo-tree, guide-key (press a prefix and wait 0.5s to see available bindings), YASnippet, Company auto-completion with math symbol support.
