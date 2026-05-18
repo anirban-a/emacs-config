@@ -189,7 +189,7 @@
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode 1)
-  (setq projectile-completion-system 'helm))
+  (setq projectile-completion-system 'default))
 
 ;; =========================================================================
 ;; * Completion (Company Mode + YASnippet)
@@ -366,7 +366,7 @@
   :diminish guide-key-mode
   :config
   (setq guide-key/guide-key-sequence
-        '("C-x" "C-c" "C-c h" "C-c p"
+        '("C-x" "C-c" "M-s" "M-g" "C-c p"
           (org-mode "C-c C-x")
           (ess-r-mode "C-c")
           (LaTeX-mode "C-c")))
@@ -374,7 +374,7 @@
   (setq guide-key/idle-delay 0.5)
   (setq guide-key/popup-window-position 'bottom)
   (setq guide-key/highlight-command-regexp
-        '("helm" ("projectile" . font-lock-type-face)))
+        '("consult" ("projectile" . font-lock-type-face)))
   (guide-key-mode 1))
 
 (use-package expand-region
