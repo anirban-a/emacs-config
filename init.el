@@ -138,6 +138,21 @@
 ;; * Completion Framework (Vertico + Consult + Orderless + Marginalia + Embark)
 ;; =========================================================================
 
+(use-package vertico
+  :config
+  (vertico-mode 1))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+;; Persist completion history for Vertico sorting
+(use-package savehist
+  :ensure nil
+  :config
+  (savehist-mode 1))
+
 ;; =========================================================================
 ;; * Project Management
 ;; =========================================================================
