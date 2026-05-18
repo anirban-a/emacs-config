@@ -153,6 +153,24 @@
   :config
   (savehist-mode 1))
 
+(use-package marginalia
+  :config
+  (marginalia-mode 1))
+
+(use-package consult
+  :bind (("M-y"     . consult-yank-pop)
+         ("C-x b"   . consult-buffer)
+         ("M-s l"   . consult-line)
+         ("M-s g"   . consult-grep)
+         ("M-s r"   . consult-ripgrep)
+         ("M-s f"   . consult-find)
+         ("M-s L"   . consult-locate)
+         ("M-g i"   . consult-imenu)
+         ("M-g m"   . consult-mark)
+         ("M-g M"   . consult-global-mark)
+         ("M-g o"   . consult-outline)
+         ("C-x r b" . consult-bookmark)))
+
 ;; =========================================================================
 ;; * Project Management
 ;; =========================================================================
