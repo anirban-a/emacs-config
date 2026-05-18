@@ -259,7 +259,8 @@
   :ensure nil
   :after ess
   :hook (ess-r-mode . (lambda ()
-                        (setq-local ess-use-flymake nil))))
+                        (setq-local ess-use-flymake nil)
+                        (setq-local flycheck-check-syntax-automatically '(save mode-enabled)))))
 
 ;; Polymode for Rmd files
 (use-package poly-R
