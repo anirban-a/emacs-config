@@ -135,71 +135,8 @@
 (set-default-coding-systems 'utf-8)
 
 ;; =========================================================================
-;; * Helm
+;; * Completion Framework (Vertico + Consult + Orderless + Marginalia + Embark)
 ;; =========================================================================
-
-(use-package helm
-  :diminish helm-mode
-  :bind (("M-x"     . helm-M-x)
-         ("M-y"     . helm-show-kill-ring)
-         ("C-x b"   . helm-mini)
-         ("C-x C-f" . helm-find-files)
-         ("C-c h o" . helm-occur)
-         ("C-c h a" . helm-apropos)
-         ("C-c h i" . helm-semantic-or-imenu)
-         ("C-c h m" . helm-man-woman)
-         ("C-c h /" . helm-find)
-         ("C-c h l" . helm-locate)
-         ("C-c h r" . helm-regexp)
-         ("C-c h x" . helm-register)
-         ("C-c h t" . helm-top)
-         ("C-c h s" . helm-surfraw)
-         ("C-c h g" . helm-google-suggest)
-         ("C-c h c" . helm-color)
-         ("C-c h b" . helm-resume)
-         ("C-h SPC" . helm-all-mark-rings)
-         :map helm-map
-         ("<tab>" . helm-execute-persistent-action)
-         ("C-i"  . helm-execute-persistent-action)
-         ("C-z"  . helm-select-action))
-  :config
-  (global-unset-key (kbd "C-x c"))
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-
-  (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t))
-
-  (setq helm-split-window-in-side-p           t
-        helm-move-to-line-cycle-in-source      t
-        helm-ff-search-library-in-sexp         t
-        helm-scroll-amount                     8
-        helm-ff-file-name-history-use-recentf  t
-        helm-echo-input-in-header-line         t
-        helm-autoresize-max-height             0
-        helm-autoresize-min-height             20
-        helm-M-x-fuzzy-match                   t
-        helm-buffers-fuzzy-matching            t
-        helm-recentf-fuzzy-match               t
-        helm-semantic-fuzzy-match              t
-        helm-imenu-fuzzy-match                 t
-        helm-locate-fuzzy-match                t
-        helm-apropos-fuzzy-match               t
-        helm-lisp-fuzzy-completion             t)
-
-  (helm-autoresize-mode 1)
-  (helm-mode 1))
-
-(use-package helm-descbinds
-  :after helm
-  :config
-  (helm-descbinds-mode))
-
-(use-package helm-projectile
-  :after (helm projectile)
-  :config
-  (helm-projectile-on))
-
-;; helm-swoop is no longer on MELPA; use helm-occur (C-c h o) instead
 
 ;; =========================================================================
 ;; * Project Management
@@ -418,20 +355,6 @@
 
 (use-package diminish)
 
-;; =========================================================================
-;; * Eshell Helm Integration
-;; =========================================================================
-
-(use-package helm-eshell
-  :ensure nil
-  :after helm
-  :hook (eshell-mode . (lambda ()
-                         (define-key eshell-mode-map (kbd "C-c C-l")
-                           'helm-eshell-history))))
-
-;; Shell history with Helm
-(with-eval-after-load 'shell
-  (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring))
 
 ;; =========================================================================
 ;; * Markdown
