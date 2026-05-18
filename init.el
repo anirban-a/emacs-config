@@ -134,6 +134,16 @@
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 
+;; Platform-specific settings
+(let ((platform-file
+       (expand-file-name
+        (pcase system-type
+          ('darwin "platform-darwin.el")
+          ('gnu/linux "platform-linux.el"))
+        user-emacs-directory)))
+  (when (file-exists-p platform-file)
+    (load platform-file)))
+
 ;; =========================================================================
 ;; * Completion Framework (Vertico + Consult + Orderless + Marginalia + Embark)
 ;; =========================================================================
@@ -318,7 +328,6 @@
         TeX-parse-self t
         TeX-PDF-mode t)
   (setq-default TeX-master nil)
-  (setq TeX-view-program-selection '((output-pdf "open")))
 
   ;; latexmk as default command
   (add-to-list 'TeX-command-list
